@@ -3,6 +3,7 @@ import Link from "next/link";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { useOutsideClickHandler } from "../hooks/customhooks";
 import styles from "./Navbar.module.css";
+import { GoMarkGithub } from "react-icons/go";
 
 type NavbarProps = {
   enableFadeOutOnScroll?: boolean;
@@ -81,11 +82,11 @@ const Navbar = (props: NavbarProps) => {
       </div>
 
       <div
-        className={`rounded bg-slate-300 w-40 absolute right-5 mt-3 p-2 shadow-lg opacity-0 ${styles.fadeIn}`}
+        className={`rounded bg-slate-300 absolute right-5 mt-3 p-2 shadow-lg opacity-0 ${styles.fadeIn}`}
         hidden={hidden}
         ref={ref}
       >
-        <div className="flex flex-col divide-y leading-9">
+        <div className="flex flex-col divide-y leading-10 px-3">
           <Link href="/#aboutme">
             <button onClick={onClickLink} disabled={disabled} className="text-left">
               About Me
@@ -99,6 +100,14 @@ const Navbar = (props: NavbarProps) => {
           <Link href="/#posts">
             <button onClick={onClickLink} disabled={disabled} className="text-left">
               Posts
+            </button>
+          </Link>
+          <Link href="https://github.com/hirotoni/nextjs-portfolio">
+            <button onClick={onClickLink} disabled={disabled} className="text-left">
+              <div className="flex flex-row items-center space-x-2">
+                <GoMarkGithub />
+                <div>View Source</div>
+              </div>
             </button>
           </Link>
         </div>

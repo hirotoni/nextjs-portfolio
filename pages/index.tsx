@@ -41,7 +41,9 @@ const Home = ({ allPostsData }: Props) => {
       </div>
       <div className="flex flex-row items-center">
         <GoMarkGithub />
-        <p className="ml-2">Github</p>
+        <a className="ml-2 text-teal-500 underline" href="https://github.com/hirotoni">
+          Github
+        </a>
       </div>
       <Heading2 id="myworks" headingTitle="My Works" />
       準備中...
