@@ -60,6 +60,9 @@ body {
 .markdown code .hljs-variable {
   color: #9cdcfe;
 }
+.markdown code .hljs-tag .hljs-name {
+  color: #4ec9b0;
+}
 
 .markdown blockquote {
   @apply px-4 py-0.5 italic text-sm border-l-4;
@@ -69,10 +72,13 @@ body {
   @apply text-2xl border-b-4 mt-4 mb-2 font-bold;
 }
 .markdown h2 {
-  @apply text-xl mt-4 mb-2 font-semibold;
+  @apply text-xl mt-4 mb-2 font-bold border-l-8 pl-2 border-l-teal-600;
 }
 .markdown h3 {
-  @apply text-lg;
+  @apply text-base mt-4 mb-2 font-bold;
+}
+.markdown h3::before {
+  content: "■ ";
 }
 .markdown h4 {
   @apply text-lg;
