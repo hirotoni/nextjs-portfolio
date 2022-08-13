@@ -1,6 +1,5 @@
 ---
 title: "マークダウンの見た目調整用のエントリ"
-date: "2022-08-02"
 ---
 
 # table of contents

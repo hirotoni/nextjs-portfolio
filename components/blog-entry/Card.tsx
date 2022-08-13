@@ -9,7 +9,7 @@ const Card = (props: Props) => {
   return (
     <div className="rounded-lg shadow-lg">
       <div className="p-4">
-        <Link href={`/posts/${props.postData.id}`}>
+        <Link href={`/posts/${props.postData.date}/${props.postData.key}`}>
           <a>{props.postData.title}</a>
         </Link>
         <br />

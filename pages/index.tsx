@@ -49,7 +49,7 @@ const Home = ({ allPostsData }: Props) => {
       準備中...
       <Heading2 id="posts" headingTitle="Posts" />
       {allPostsData.map((postData) => (
-        <Card key={postData.id} postData={postData} />
+        <Card key={`${postData.date}${postData.key}`} postData={postData} />
       ))}
     </Layout>
   );

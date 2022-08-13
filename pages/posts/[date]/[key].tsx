@@ -1,11 +1,11 @@
-import PostsLayout from "../../components/layout/PostsLayout";
-import { getAllPostIds, getPostData } from "../../lib/posts";
+import PostsLayout from "../../../components/layout/PostsLayout";
+import { getAllPostKeys, getPostData, PostDetail } from "../../../lib/posts";
 import Head from "next/head";
-import Date from "../../components/Date";
+import Date from "../../../components/Date";
 
 // possible values for id(=path) are defined by 'getStaticPaths'
 export async function getStaticPaths() {
-  const paths = getAllPostIds();
+  const paths = getAllPostKeys();
   return {
     paths,
     fallback: false,
@@ -13,7 +13,7 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-  const postData = await getPostData(params.id);
+  const postData = await getPostData(params);
   return {
     props: {
       postData,
@@ -21,7 +21,11 @@ export async function getStaticProps({ params }) {
   };
 }
 
-export default function Post({ postData }) {
+type Props = {
+  postData: PostDetail;
+};
+
+export default function Post({ postData }: Props) {
   return (
     <PostsLayout>
       <Head>
@@ -30,7 +34,7 @@ export default function Post({ postData }) {
       <article>
         <h1 className="text-3xl font-extrabold leading-10 tracking-wide my-4">{postData.title}</h1>
         <div className="text-gray-500">
-          <Date dateString={postData.date} />
+          <Date dateString={postData.postData.date} />
         </div>
         <div className="markdown">
           <div dangerouslySetInnerHTML={{ __html: postData.contentHtml }} />
