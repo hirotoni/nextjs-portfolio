@@ -102,14 +102,14 @@ const Navbar = (props: NavbarProps) => {
               Posts
             </button>
           </Link>
-          <Link href="https://github.com/hirotoni/nextjs-portfolio">
+          <a href="https://github.com/hirotoni/nextjs-portfolio" target="_blank">
             <button onClick={onClickLink} disabled={disabled} className="text-left">
               <div className="flex flex-row items-center space-x-2">
                 <GoMarkGithub />
                 <div>View Source</div>
               </div>
             </button>
-          </Link>
+          </a>
         </div>
       </div>
     </div>
