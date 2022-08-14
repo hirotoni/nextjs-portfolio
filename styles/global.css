@@ -89,3 +89,18 @@ body {
 .markdown strong {
   @apply font-bold text-red-500;
 }
+
+.markdown table {
+  border-width: 1px;
+  margin: 8px 0;
+}
+
+.markdown table th {
+  @apply bg-teal-500/90;
+  border-width: 1px;
+  padding: 4px;
+}
+.markdown table td {
+  border-width: 1px;
+  padding: 4px;
+}

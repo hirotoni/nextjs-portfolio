@@ -8,6 +8,7 @@ import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
 import rehypeStringify from "rehype-stringify";
 import rehypeSlug from "rehype-slug";
 import rehypeHighlight from "rehype-highlight";
+import remarkGfm from "remark-gfm";
 import { readdirRecursively } from "./filesystem";
 
 const postsDirectory = path.join(process.cwd(), "posts");
@@ -83,6 +84,7 @@ export async function getPostData(postData: PostData): Promise<PostDetail> {
   // Use remark to convert markdown into HTML string
   const processedContent = await unified()
     .use(remarkParse)
+    .use(remarkGfm)
     .use(remarkRehype)
     .use(rehypeSanitize, {
       ...defaultSchema,
