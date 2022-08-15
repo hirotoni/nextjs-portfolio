@@ -1,27 +1,27 @@
 import Head from "next/head";
-import Card from "../components/blog-entry/Card";
-import Layout from "../components/layout/Layout";
-import Heading2 from "../components/Heading2";
-import { getSortedPostsData, PostData } from "../lib/posts";
-import { GoMarkGithub } from "react-icons/go";
 import { BsFillExclamationTriangleFill } from "react-icons/bs";
+import { GoMarkGithub } from "react-icons/go";
+import Card from "../components/blog-entry/Card";
+import Heading2 from "../components/Heading2";
+import Layout from "../components/layout/Layout";
+import { getSortedPostsKeys, PostKey } from "../lib/posts";
 
 export const siteTitle = "hirotoni.com";
 
 export async function getStaticProps() {
-  const allPostsData = getSortedPostsData();
+  const allPostsKeys = getSortedPostsKeys();
   return {
     props: {
-      allPostsData,
+      allPostsKeys,
     },
   };
 }
 
 type Props = {
-  allPostsData: PostData[];
+  allPostsKeys: PostKey[];
 };
 
-const Home = ({ allPostsData }: Props) => {
+const Home = ({ allPostsKeys }: Props) => {
   return (
     <Layout home>
       <Head>
@@ -48,8 +48,8 @@ const Home = ({ allPostsData }: Props) => {
       <Heading2 id="myworks" headingTitle="My Works" />
       準備中...
       <Heading2 id="posts" headingTitle="Posts" />
-      {allPostsData.map((postData) => (
-        <Card key={`${postData.date}${postData.key}`} postData={postData} />
+      {allPostsKeys.map((postKey) => (
+        <Card key={`${postKey.date}${postKey.key}`} postKey={postKey} />
       ))}
     </Layout>
   );

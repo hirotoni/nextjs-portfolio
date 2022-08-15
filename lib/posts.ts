@@ -1,22 +1,27 @@
 import fs from "fs";
-import path from "path";
 import matter from "gray-matter";
-import { unified } from "unified";
-import remarkRehype from "remark-rehype";
-import remarkParse from "remark-parse";
-import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
-import rehypeStringify from "rehype-stringify";
-import rehypeSlug from "rehype-slug";
+import path from "path";
 import rehypeHighlight from "rehype-highlight";
+import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
+import rehypeSlug from "rehype-slug";
+import rehypeStringify from "rehype-stringify";
 import remarkGfm from "remark-gfm";
+import remarkParse from "remark-parse";
+import remarkRehype from "remark-rehype";
+import { unified } from "unified";
 import { readdirRecursively } from "./filesystem";
 
 const postsDirectory = path.join(process.cwd(), "posts");
 
-export type PostDataMeta = { title?: string };
-export type PostData = { key: string; date: string } & PostDataMeta;
-export type PostDetail = { postData: PostData; contentHtml: string } & PostDataMeta;
+export type PostMeta = { title?: string };
+export type PostKey = { key: string; date: string } & PostMeta;
+export type PostContent = { contentHtml: string } & PostKey;
 
+/**
+ * Extract date and key from fullpath.
+ * e.g.: ${postsDirectory}/2022-08-01/newpost.md
+ * from above string, get date:2022-08-02, key:newpost
+ */
 function getDateAndKeyFromFullPath(fullpath: string) {
   const dateKey = fullpath.replace(postsDirectory + "/", "").replace(/\.md$/, "");
   const match = dateKey.match(/(\d{4}-\d{2}-\d{2})\/(.+)/);
@@ -26,28 +31,23 @@ function getDateAndKeyFromFullPath(fullpath: string) {
   return { date, key };
 }
 
-export function getAllPostKeys(): { params: PostData }[] {
+export function getAllPostKeys(): { params: PostKey }[] {
   let filenames = readdirRecursively(postsDirectory);
   filenames = filenames.filter((fileName: string) => fileName.endsWith(".md"));
   return filenames.map((fullPath) => {
     const { date, key } = getDateAndKeyFromFullPath(fullPath);
     return {
-      params: {
-        date,
-        key,
-      },
+      params: { date, key },
     };
   });
 }
 
-export function getSortedPostsData(): PostData[] {
+export function getSortedPostsKeys(): PostKey[] {
   // Get file names under /posts and get only md files
   let filenames = readdirRecursively(postsDirectory);
   filenames = filenames.filter((fileName: string) => fileName.endsWith(".md"));
 
-  const allPostsData: PostData[] = filenames.map((fullPath) => {
-    // Extract date and key from fullpath
-    // e.g.: ${postsDirectory}/2022-08-01/newpost.md
+  const allPostsData: PostKey[] = filenames.map((fullPath) => {
     const { date, key } = getDateAndKeyFromFullPath(fullPath);
 
     // Read markdown file as string
@@ -59,7 +59,7 @@ export function getSortedPostsData(): PostData[] {
     return {
       key,
       date,
-      ...(matterResult.data as PostDataMeta),
+      ...(matterResult.data as PostMeta),
     };
   });
   // Sort posts by date
@@ -74,7 +74,7 @@ export function getSortedPostsData(): PostData[] {
   });
 }
 
-export async function getPostData(postData: PostData): Promise<PostDetail> {
+export async function getPostContent(postData: PostKey): Promise<PostContent> {
   const fullPath = path.join(postsDirectory, `${postData.date}`, `${postData.key}.md`);
   const fileContents = fs.readFileSync(fullPath, "utf8");
 
@@ -105,8 +105,8 @@ export async function getPostData(postData: PostData): Promise<PostDetail> {
 
   // Combine the data with the id and contentHtml
   return {
-    postData,
     contentHtml,
-    ...(matterResult.data as PostDataMeta),
+    ...postData,
+    ...(matterResult.data as PostMeta),
   };
 }
