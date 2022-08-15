@@ -16,6 +16,7 @@ title: "マークダウンの見た目調整用のエントリ"
         - [header5](#header5)
 - [code block](#code-block)
 - [block quote](#block-quote)
+- [images](#images)
 
 # unordered list
 
@@ -53,7 +54,7 @@ title: "マークダウンの見た目調整用のエントリ"
 
 _イタリック体_
 
-[リンク文字](#)
+[リンク文字](#text-decoration)
 
 - [ ] 未チェック
 - [x] 済チェック
@@ -109,4 +110,9 @@ function aiueo() {
 
 > 引用文　引用文　引用文
 > 引用文　引用文　引用文
+>
 > 引用文　引用文　引用文
+
+# images
+
+![pudding](/images/posts/2022-08-02/pudding.jpg)
