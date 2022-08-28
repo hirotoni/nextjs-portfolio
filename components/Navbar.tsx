@@ -68,9 +68,9 @@ const Navbar = (props: NavbarProps) => {
     <div
       ref={headerRef}
       style={{ opacity: opacity }}
-      className={`container mx-auto z-10 py-2 sticky top-0 bg-white/40 backdrop-blur-sm lg:w-6/12`}
+      className={`container mx-auto z-10 py-2 sticky top-0 bg-white/40 backdrop-blur-sm`}
     >
-      <div className="flex flex-row justify-between items-center px-5">
+      <div className="flex flex-row justify-between items-center px-1">
         <Link href="/">
           <button disabled={disabled}>
             <strong className="text-lg">Hirotoni</strong>

@@ -15,9 +15,9 @@ const Layout = ({ children, home }: Props) => {
         <meta name="author" content="Hirotoni" />
       </Head>
 
-      <Navbar />
+      <div className="container mx-auto px-4 pb-14 lg:w-5/12">
+        <Navbar />
 
-      <div className="container mx-auto px-4 pb-14 pt-6 lg:w-6/12">
         <EyeCatch isHome={home} />
 
         <main>{children}</main>

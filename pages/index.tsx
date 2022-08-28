@@ -1,27 +1,27 @@
 import Head from "next/head";
-import { BsFillExclamationTriangleFill } from "react-icons/bs";
+import { BsFillExclamationTriangleFill, BsTwitter } from "react-icons/bs";
 import { GoMarkGithub } from "react-icons/go";
-import Card from "../components/blog-entry/Card";
+import MdxCard from "../components/blog-entry/MdxCard";
 import Heading2 from "../components/Heading2";
 import Layout from "../components/layout/Layout";
-import { getSortedPostsKeys, PostKey } from "../lib/posts";
+import { getSortedMdxPostsKeys, PostKey } from "../lib/posts";
 
 export const siteTitle = "hirotoni.com";
 
 export async function getStaticProps() {
-  const allPostsKeys = getSortedPostsKeys();
+  const allMdxPostsKeys = getSortedMdxPostsKeys();
   return {
     props: {
-      allPostsKeys,
+      allMdxPostsKeys,
     },
   };
 }
 
 type Props = {
-  allPostsKeys: PostKey[];
+  allMdxPostsKeys: PostKey[];
 };
 
-const Home = ({ allPostsKeys }: Props) => {
+const Home = ({ allMdxPostsKeys }: Props) => {
   return (
     <Layout home>
       <Head>
@@ -37,19 +37,25 @@ const Home = ({ allPostsKeys }: Props) => {
       </div>
       <Heading2 id="aboutme" headingTitle="About Me" />
       <div>
-        <p></p>
+        <p>Software Engineer</p>
       </div>
       <div className="flex flex-row items-center">
         <GoMarkGithub />
         <a className="ml-2 text-teal-500 underline" href="https://github.com/hirotoni">
-          Github
+          hirotoni
+        </a>
+      </div>
+      <div className="flex flex-row items-center">
+        <BsTwitter />
+        <a className="ml-2 text-teal-500 underline" href="https://twitter.com/h_tonitoni">
+          h_tonitoni
         </a>
       </div>
       <Heading2 id="myworks" headingTitle="My Works" />
       準備中...
       <Heading2 id="posts" headingTitle="Posts" />
-      {allPostsKeys.map((postKey) => (
-        <Card key={`${postKey.date}${postKey.key}`} postKey={postKey} />
+      {allMdxPostsKeys.map((postKey) => (
+        <MdxCard key={`${postKey.date}${postKey.key}`} postKey={postKey} />
       ))}
     </Layout>
   );

@@ -8,6 +8,9 @@ title: "マークダウンの見た目調整用のエントリ"
 - [unordered list](#unordered-list)
 - [ordered list](#ordered-list)
 - [table](#table)
+  - [basic table](#basic-table)
+  - [horizontally long table](#horizontally-long-table)
+  - [table with aligned format](#table-with-aligned-format)
 - [text decoration](#text-decoration)
 - [header1](#header1)
   - [header2](#header2)
@@ -32,13 +35,23 @@ title: "マークダウンの見た目調整用のエントリ"
 
 # table
 
+## basic table
+
 | header1 | header2 | header3 |
 | ------- | ------- | ------- |
 | cell1   | cell2   | cell3   |
 | cell1   | cell2   | cell3   |
 | cell1   | cell2   | cell3   |
 
----
+## horizontally long table
+
+| header1 | header2 | header3 | header3 | header3 | header3 | header3 | header3 | header3 | header3 | header3 | header3 | header3 | header3 | header3 | header3 |
+| ------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- |
+| cell1   | cell2   | cell3   | cell3   | cell3   | cell3   | cell3   | cell3   | cell3   | cell3   | cell3   | cell3   | cell3   | cell3   | cell3   | cell3   |
+| cell1   | cell2   | cell3   | cell3   | cell3   | cell3   | cell3   | cell3   | cell3   | cell3   | cell3   | cell3   | cell3   | cell3   | cell3   | cell3   |
+| cell1   | cell2   | cell3   | cell3   | cell3   | cell3   | cell3   | cell3   | cell3   | cell3   | cell3   | cell3   | cell3   | cell3   | cell3   | cell3   |
+
+## table with aligned format
 
 | header1 | header2 | header3 |
 | :------ | :-----: | ------: |
@@ -55,6 +68,9 @@ title: "マークダウンの見た目調整用のエントリ"
 _イタリック体_
 
 [リンク文字](#text-decoration)
+
+URL ベタ打ち
+http://localhost:3000/mdxposts/2022-08-18/markdown-sample
 
 - [ ] 未チェック
 - [x] 済チェック

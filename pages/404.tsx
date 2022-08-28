@@ -1,5 +1,3 @@
-import styles from "./404.module.css";
-
 export default function Custom404() {
   return (
     <div className="flex h-screen justify-center items-center">

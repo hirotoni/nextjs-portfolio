@@ -1,29 +1,26 @@
+import rehypePrism from "@mapbox/rehype-prism";
+import { compile } from "@mdx-js/mdx";
 import fs from "fs";
 import matter from "gray-matter";
 import path from "path";
-import rehypeHighlight from "rehype-highlight";
 import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
 import rehypeSlug from "rehype-slug";
-import rehypeStringify from "rehype-stringify";
 import remarkGfm from "remark-gfm";
-import remarkParse from "remark-parse";
-import remarkRehype from "remark-rehype";
-import { unified } from "unified";
 import { readdirRecursively } from "./filesystem";
 
-const postsDirectory = path.join(process.cwd(), "posts");
+const mdxpostsDirectory = path.join(process.cwd(), "mdxposts");
 
 export type PostMeta = { title?: string };
 export type PostKey = { key: string; date: string } & PostMeta;
-export type PostContent = { contentHtml: string } & PostKey;
+export type MdxPostContent = { compiledCode: string } & PostKey;
 
 /**
  * Extract date and key from fullpath.
  * e.g.: ${postsDirectory}/2022-08-01/newpost.md
  * from above string, get date:2022-08-02, key:newpost
  */
-function getDateAndKeyFromFullPath(fullpath: string) {
-  const dateKey = fullpath.replace(postsDirectory + "/", "").replace(/\.md$/, "");
+function getDateAndKeyFromMdxFullPath(fullpath: string) {
+  const dateKey = fullpath.replace(mdxpostsDirectory + "/", "").replace(/\.md$/, "");
   const match = dateKey.match(/(\d{4}-\d{2}-\d{2})\/(.+)/);
   const date = match ? match[1] : null;
   const key = match ? match[2] : null;
@@ -31,24 +28,24 @@ function getDateAndKeyFromFullPath(fullpath: string) {
   return { date, key };
 }
 
-export function getAllPostKeys(): { params: PostKey }[] {
-  let filenames = readdirRecursively(postsDirectory);
+export function getAllMdxPostKeys(): { params: PostKey }[] {
+  let filenames = readdirRecursively(mdxpostsDirectory);
   filenames = filenames.filter((fileName: string) => fileName.endsWith(".md"));
   return filenames.map((fullPath) => {
-    const { date, key } = getDateAndKeyFromFullPath(fullPath);
+    const { date, key } = getDateAndKeyFromMdxFullPath(fullPath);
     return {
       params: { date, key },
     };
   });
 }
 
-export function getSortedPostsKeys(): PostKey[] {
+export function getSortedMdxPostsKeys(): PostKey[] {
   // Get file names under /posts and get only md files
-  let filenames = readdirRecursively(postsDirectory);
+  let filenames = readdirRecursively(mdxpostsDirectory);
   filenames = filenames.filter((fileName: string) => fileName.endsWith(".md"));
 
   const allPostsData: PostKey[] = filenames.map((fullPath) => {
-    const { date, key } = getDateAndKeyFromFullPath(fullPath);
+    const { date, key } = getDateAndKeyFromMdxFullPath(fullPath);
 
     // Read markdown file as string
     // Use gray-matter to parse the post metadata section
@@ -74,39 +71,54 @@ export function getSortedPostsKeys(): PostKey[] {
   });
 }
 
-export async function getPostContent(postData: PostKey): Promise<PostContent> {
-  const fullPath = path.join(postsDirectory, `${postData.date}`, `${postData.key}.md`);
-  const fileContents = fs.readFileSync(fullPath, "utf8");
+export async function getMdxPostContent(postKey: PostKey): Promise<MdxPostContent> {
+  const fullPath = path.join(mdxpostsDirectory, `${postKey.date}`, `${postKey.key}.md`);
+  const rawCode = fs.readFileSync(fullPath, "utf8");
 
-  // Use gray-matter to parse the post metadata section
-  const matterResult = matter(fileContents);
+  const matterResult = matter(rawCode);
 
-  // Use remark to convert markdown into HTML string
-  const processedContent = await unified()
-    .use(remarkParse)
-    .use(remarkGfm)
-    .use(remarkRehype)
-    .use(rehypeSanitize, {
-      ...defaultSchema,
-      attributes: {
-        ...defaultSchema.attributes,
-        code: [
-          ...(defaultSchema.attributes.code || []),
-          // List of all allowed languages:
-          ["className", "language-js", "language-python", "language-csharp", "language-html", "language-css"],
+  const compiledCode = String(
+    // DANGER: this mdx->jsx compiled code will possively be run on client side.
+    // In case of injection attack, rehypeSanitize plugin is applied on server side.
+    await compile(matterResult.content, {
+      providerImportSource: "@mdx-js/react",
+      outputFormat: "function-body",
+      remarkPlugins: [remarkGfm],
+      rehypePlugins: [
+        [
+          rehypeSanitize,
+          {
+            ...defaultSchema,
+            attributes: {
+              ...defaultSchema.attributes,
+              code: [
+                ...(defaultSchema.attributes.code || []),
+                // List of all allowed languages:
+                [
+                  "className",
+                  "language-javascript",
+                  "language-python",
+                  "language-csharp",
+                  "language-html",
+                  "language-css",
+                  "language-xml",
+                  "language-django",
+                  "language-jsx",
+                  "language-tsx",
+                ],
+              ],
+            },
+          },
         ],
-      },
+        rehypePrism,
+        rehypeSlug,
+      ],
     })
-    .use(rehypeHighlight)
-    .use(rehypeStringify)
-    .use(rehypeSlug)
-    .process(matterResult.content);
-  const contentHtml = processedContent.toString();
+  );
 
-  // Combine the data with the id and contentHtml
   return {
-    contentHtml,
-    ...postData,
+    compiledCode,
+    ...postKey,
     ...(matterResult.data as PostMeta),
   };
 }
