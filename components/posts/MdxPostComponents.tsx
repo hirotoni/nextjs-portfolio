@@ -1,5 +1,14 @@
-import React, { DetailedHTMLProps, HTMLAttributes, ImgHTMLAttributes, OlHTMLAttributes, ReactNode } from "react";
 import Image from "next/image";
+import React, {
+  DetailedHTMLProps,
+  HTMLAttributes,
+  ImgHTMLAttributes,
+  OlHTMLAttributes,
+  ReactNode,
+  useRef,
+  useState,
+} from "react";
+import { useOutsideClickHandler } from "../../hooks/customhooks";
 
 /**
  * if you want to use rehype plugins result,
@@ -31,7 +40,7 @@ export const A = (props) => (
   </a>
 );
 
-export const P = (props) => <p className="my-4">{props.children}</p>;
+export const P = (props) => <div className="my-4">{props.children}</div>;
 
 export const Ol = (props: DetailedHTMLProps<OlHTMLAttributes<HTMLOListElement>, HTMLOListElement>) => (
   <ol className="list-decimal list-outside pl-6">{props.children}</ol>
@@ -59,8 +68,26 @@ export const Blockquote = (props) => (
   <blockquote className="px-4 py-0.5 italic text-sm border-l-4">{props.children}</blockquote>
 );
 
-export const Img = (props: DetailedHTMLProps<ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement>) => (
-  <p className="w-80 mx-auto">
-    <Image src={props.src} alt={props.alt} width="100" height="100" layout="responsive" />
-  </p>
-);
+export const Img = (props: DetailedHTMLProps<ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement>) => {
+  const ref = useRef(null);
+  const [hidden, setHidden] = useState(true);
+  const onClick = () => {
+    console.log("clicked!!!");
+    setHidden(!hidden);
+  };
+
+  useOutsideClickHandler(ref, (e) => setHidden(true));
+
+  return (
+    <>
+      <p className="mx-auto w-1/2" onClick={onClick}>
+        <Image src={props.src} alt={props.alt} width="100" height="100" layout="responsive" />
+      </p>
+      <div className="fixed top-0 left-0 w-full h-full bg-slate-300/50 z-10" hidden={hidden}>
+        <div className="mx-auto w-2/4 translate-y-2/4" ref={ref}>
+          <Image src={props.src} alt={props.alt} width="100" height="100" layout="responsive" />
+        </div>
+      </div>
+    </>
+  );
+};
