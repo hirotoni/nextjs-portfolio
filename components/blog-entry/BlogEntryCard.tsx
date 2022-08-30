@@ -5,11 +5,11 @@ import Date from "../Date";
 
 type Props = { postKey: PostKey };
 
-const MdxCard = ({ postKey }: Props) => {
+const BlogEntryCard = ({ postKey }: Props) => {
   return (
     <div className="rounded-lg shadow-md">
       <div className="p-4">
-        <Link href={`/mdxposts/${postKey.date}/${postKey.key}`}>
+        <Link href={`/posts/${postKey.date}/${postKey.key}`}>
           <a>{postKey.title}</a>
         </Link>
         <br />
@@ -21,4 +21,4 @@ const MdxCard = ({ postKey }: Props) => {
   );
 };
 
-export default MdxCard;
+export default BlogEntryCard;

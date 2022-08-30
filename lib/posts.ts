@@ -1,18 +1,21 @@
-import rehypePrism from "@mapbox/rehype-prism";
-import { compile } from "@mdx-js/mdx";
 import fs from "fs";
 import matter from "gray-matter";
+import { MDXRemoteSerializeResult } from "next-mdx-remote";
+import { serialize } from "next-mdx-remote/serialize";
 import path from "path";
+import rehypePrism from "rehype-prism-plus";
 import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
 import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
 import { readdirRecursively } from "./filesystem";
 
-const mdxpostsDirectory = path.join(process.cwd(), "mdxposts");
+const postsFolder = "posts";
+const mdxpostsDirectory = path.join(process.cwd(), postsFolder);
+const extension = ".md";
 
 export type PostMeta = { title?: string };
 export type PostKey = { key: string; date: string } & PostMeta;
-export type MdxPostContent = { compiledCode: string } & PostKey;
+export type MdxPostContent = { mdxPostContent: MDXRemoteSerializeResult } & PostKey;
 
 /**
  * Extract date and key from fullpath.
@@ -20,7 +23,8 @@ export type MdxPostContent = { compiledCode: string } & PostKey;
  * from above string, get date:2022-08-02, key:newpost
  */
 function getDateAndKeyFromMdxFullPath(fullpath: string) {
-  const dateKey = fullpath.replace(mdxpostsDirectory + "/", "").replace(/\.md$/, "");
+  const pattern = new RegExp(`${extension}$`);
+  const dateKey = fullpath.replace(mdxpostsDirectory + "/", "").replace(pattern, "");
   const match = dateKey.match(/(\d{4}-\d{2}-\d{2})\/(.+)/);
   const date = match ? match[1] : null;
   const key = match ? match[2] : null;
@@ -30,7 +34,7 @@ function getDateAndKeyFromMdxFullPath(fullpath: string) {
 
 export function getAllMdxPostKeys(): { params: PostKey }[] {
   let filenames = readdirRecursively(mdxpostsDirectory);
-  filenames = filenames.filter((fileName: string) => fileName.endsWith(".md"));
+  filenames = filenames.filter((fileName: string) => fileName.endsWith(extension));
   return filenames.map((fullPath) => {
     const { date, key } = getDateAndKeyFromMdxFullPath(fullPath);
     return {
@@ -42,7 +46,7 @@ export function getAllMdxPostKeys(): { params: PostKey }[] {
 export function getSortedMdxPostsKeys(): PostKey[] {
   // Get file names under /posts and get only md files
   let filenames = readdirRecursively(mdxpostsDirectory);
-  filenames = filenames.filter((fileName: string) => fileName.endsWith(".md"));
+  filenames = filenames.filter((fileName: string) => fileName.endsWith(extension));
 
   const allPostsData: PostKey[] = filenames.map((fullPath) => {
     const { date, key } = getDateAndKeyFromMdxFullPath(fullPath);
@@ -50,13 +54,13 @@ export function getSortedMdxPostsKeys(): PostKey[] {
     // Read markdown file as string
     // Use gray-matter to parse the post metadata section
     const fileContents = fs.readFileSync(fullPath, "utf8");
-    const matterResult = matter(fileContents);
+    const { content, data } = matter(fileContents);
 
     // Combine the data with the key
     return {
       key,
       date,
-      ...(matterResult.data as PostMeta),
+      ...(data as PostMeta),
     };
   });
   // Sort posts by date
@@ -72,17 +76,24 @@ export function getSortedMdxPostsKeys(): PostKey[] {
 }
 
 export async function getMdxPostContent(postKey: PostKey): Promise<MdxPostContent> {
-  const fullPath = path.join(mdxpostsDirectory, `${postKey.date}`, `${postKey.key}.md`);
+  const fullPath = path.join(mdxpostsDirectory, `${postKey.date}`, `${postKey.key}${extension}`);
   const rawCode = fs.readFileSync(fullPath, "utf8");
 
-  const matterResult = matter(rawCode);
+  // =======================================================================
+  // Implementation using next-mdx-remote
+  // References:
+  // https://github.com/hashicorp/next-mdx-remote
+  // https://github.com/vercel/next.js/tree/canary/examples/with-mdx-remote
+  // =======================================================================
 
-  const compiledCode = String(
-    // DANGER: this mdx->jsx compiled code will possively be run on client side.
-    // In case of injection attack, rehypeSanitize plugin is applied on server side.
-    await compile(matterResult.content, {
-      providerImportSource: "@mdx-js/react",
-      outputFormat: "function-body",
+  const { content, data: metadata } = matter(rawCode);
+
+  const mdxPostContent = await serialize(content, {
+    // made available to the arguments of any custom mdx component
+    scope: {},
+    // MDX's available options, see the MDX docs for more info.
+    // https://mdxjs.com/packages/mdx/#compilefile-options
+    mdxOptions: {
       remarkPlugins: [remarkGfm],
       rehypePlugins: [
         [
@@ -113,12 +124,15 @@ export async function getMdxPostContent(postKey: PostKey): Promise<MdxPostConten
         rehypePrism,
         rehypeSlug,
       ],
-    })
-  );
+      format: "mdx",
+    },
+    // Indicates whether or not to parse the frontmatter from the mdx source
+    parseFrontmatter: false,
+  });
 
   return {
-    compiledCode,
+    mdxPostContent,
     ...postKey,
-    ...(matterResult.data as PostMeta),
+    ...metadata,
   };
 }

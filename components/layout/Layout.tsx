@@ -4,9 +4,13 @@ import EyeCatch from "../EyeCatch";
 import Footer from "../Footer";
 import Navbar from "../Navbar";
 
-type Props = { children: React.ReactNode; home?: boolean };
+type Props = {
+  children: React.ReactNode;
+  home?: boolean;
+  post?: boolean;
+};
 
-const Layout = ({ children, home }: Props) => {
+const Layout = ({ children, home, post }: Props) => {
   return (
     <>
       <Head>
@@ -16,7 +20,7 @@ const Layout = ({ children, home }: Props) => {
       </Head>
 
       <div className="container mx-auto px-4 pb-14 lg:w-5/12">
-        <Navbar />
+        <Navbar enableFadeOutOnScroll={post} />
 
         <EyeCatch isHome={home} />
 

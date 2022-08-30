@@ -1,5 +1,5 @@
 ---
-title: "マークダウンの見た目調整用のエントリ"
+title: マークダウンの見た目調整用エントリ
 ---
 
 # table of contents
@@ -70,7 +70,7 @@ _イタリック体_
 [リンク文字](#text-decoration)
 
 URL ベタ打ち
-http://localhost:3000/mdxposts/2022-08-18/markdown-sample
+https://www.hirotoni.com/mdxposts/2022-08-18/markdown-sample#text-decoration
 
 - [ ] 未チェック
 - [x] 済チェック
@@ -107,7 +107,7 @@ def aiueo():
   pass
 ```
 
-```javascript
+```javascript {1,3-4} showLineNumbers
 // this is a comment
 function aiueo() {
   const number = 60;
