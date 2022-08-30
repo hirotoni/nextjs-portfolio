@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { BsFillExclamationTriangleFill, BsTwitter } from "react-icons/bs";
 import { GoMarkGithub } from "react-icons/go";
-import MdxCard from "../components/blog-entry/MdxCard";
+import BlogEntryCard from "../components/blog-entry/BlogEntryCard";
 import Heading2 from "../components/Heading2";
 import Layout from "../components/layout/Layout";
 import { getSortedMdxPostsKeys, PostKey } from "../lib/posts";
@@ -55,7 +55,7 @@ const Home = ({ allMdxPostsKeys }: Props) => {
       準備中...
       <Heading2 id="posts" headingTitle="Posts" />
       {allMdxPostsKeys.map((postKey) => (
-        <MdxCard key={`${postKey.date}${postKey.key}`} postKey={postKey} />
+        <BlogEntryCard key={`${postKey.date}${postKey.key}`} postKey={postKey} />
       ))}
     </Layout>
   );
