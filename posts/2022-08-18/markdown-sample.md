@@ -107,7 +107,7 @@ def aiueo():
   pass
 ```
 
-```javascript
+```javascript {1,3-4} showLineNumbers
 // this is a comment
 function aiueo() {
   const number = 60;

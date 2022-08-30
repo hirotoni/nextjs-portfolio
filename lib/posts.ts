@@ -1,9 +1,9 @@
-import rehypePrism from "@mapbox/rehype-prism";
 import fs from "fs";
 import matter from "gray-matter";
 import { MDXRemoteSerializeResult } from "next-mdx-remote";
 import { serialize } from "next-mdx-remote/serialize";
 import path from "path";
+import rehypePrism from "rehype-prism-plus";
 import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
 import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
