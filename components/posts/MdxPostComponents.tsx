@@ -91,3 +91,7 @@ export const Img = (props: DetailedHTMLProps<ImgHTMLAttributes<HTMLImageElement>
     </>
   );
 };
+
+export const Hr = (props) => {
+  return <hr className="my-5 border-2" />;
+};

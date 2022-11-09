@@ -17,6 +17,7 @@ import {
   Pre,
   Table,
   Ul,
+  Hr,
 } from "../../../components/posts/MdxPostComponents";
 import { getAllMdxPostKeys, getMdxPostContent, MdxPostContent, PostKey } from "../../../lib/posts";
 
@@ -34,6 +35,7 @@ const components: MDXComponents = {
   table: Table,
   blockquote: Blockquote,
   img: Img,
+  hr: Hr,
 };
 
 export async function getStaticPaths() {
