@@ -13,7 +13,7 @@ const postsFolder = "posts";
 const mdxpostsDirectory = path.join(process.cwd(), postsFolder);
 const extension = ".md";
 
-export type PostMeta = { title?: string };
+export type PostMeta = { title?: string; published?: boolean };
 export type PostKey = { key: string; date: string } & PostMeta;
 export type MdxPostContent = { mdxPostContent: MDXRemoteSerializeResult } & PostKey;
 
@@ -48,7 +48,16 @@ export function getSortedMdxPostsKeys(): PostKey[] {
   let filenames = readdirRecursively(mdxpostsDirectory);
   filenames = filenames.filter((fileName: string) => fileName.endsWith(extension));
 
-  const allPostsData: PostKey[] = filenames.map((fullPath) => {
+  const publishedPostFilenames: string[] = filenames.filter((fullPath) => {
+    // Read markdown file as string
+    // Use gray-matter to parse the post metadata section
+    const fileContents = fs.readFileSync(fullPath, "utf8");
+    const { content, data } = matter(fileContents);
+
+    return data.published;
+  });
+
+  const allPostsData = publishedPostFilenames.map((fullPath) => {
     const { date, key } = getDateAndKeyFromMdxFullPath(fullPath);
 
     // Read markdown file as string
@@ -63,6 +72,7 @@ export function getSortedMdxPostsKeys(): PostKey[] {
       ...(data as PostMeta),
     };
   });
+
   // Sort posts by date
   return allPostsData.sort(({ date: a }, { date: b }) => {
     if (a < b) {
@@ -116,6 +126,8 @@ export async function getMdxPostContent(postKey: PostKey): Promise<MdxPostConten
                   "language-django",
                   "language-jsx",
                   "language-tsx",
+                  "language-markdown",
+                  "language-md",
                 ],
               ],
             },
