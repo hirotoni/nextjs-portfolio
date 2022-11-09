@@ -1,6 +1,7 @@
 ---
 title: "ポートフォリオサイトを自作してみた１：動機・技術スタック・技術選定"
 published: true
+tags: ["React", "Next.js", "Django", "web framework", "Tailwindcss", "GCP"]
 ---
 
 # 目次

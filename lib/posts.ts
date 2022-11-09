@@ -13,7 +13,7 @@ const postsFolder = "posts";
 const mdxpostsDirectory = path.join(process.cwd(), postsFolder);
 const extension = ".md";
 
-export type PostMeta = { title?: string; published?: boolean };
+export type PostMeta = { title?: string; published?: boolean; tags?: string[] };
 export type PostKey = { key: string; date: string } & PostMeta;
 export type MdxPostContent = { mdxPostContent: MDXRemoteSerializeResult } & PostKey;
 

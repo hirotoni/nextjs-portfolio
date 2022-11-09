@@ -1,6 +1,7 @@
 ---
 title: "ポートフォリオサイトを自作してみた２：作成の記録"
 published: true
+tags: ["React", "Next.js", "Django", "web framework"]
 ---
 
 # 目次

@@ -1,6 +1,7 @@
 ---
 title: ソフトウェアエンジニアの現場のコミュニケーション資料について
 published: true
+tags: ["engineering", "tips"]
 ---
 
 # 目次

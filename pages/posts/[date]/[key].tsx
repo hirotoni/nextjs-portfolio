@@ -67,6 +67,11 @@ export default function Post({ mdxPostContent }: Props) {
       </Head>
       <article>
         <h1 className="text-3xl font-extrabold leading-10 tracking-wide my-4">{mdxPostContent.title}</h1>
+        <div className="flex space-x-2 mb-2">
+          {mdxPostContent.tags?.map((tag) => (
+            <text className="bg-slate-200 py-1 px-2 rounded-md shadow-md border border-slate-300 text-sm">{tag}</text>
+          ))}
+        </div>
         <div className="text-gray-500">
           <Date dateString={mdxPostContent.date} />
         </div>
