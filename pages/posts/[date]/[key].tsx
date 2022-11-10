@@ -68,7 +68,7 @@ export default function Post({ mdxPostContent }: Props) {
       </Head>
       <article>
         <h1 className="text-3xl font-extrabold leading-10 tracking-wide my-4">{mdxPostContent.title}</h1>
-        <div className="flex flex-wrap space-x-2 mb-2">
+        <div className="flex flex-wrap justify-start space-x-2 leading-10">
           {mdxPostContent.tags?.map((tag) => (
             <Link href={`/tags/${tag.toLowerCase()}`}>
               <a>
