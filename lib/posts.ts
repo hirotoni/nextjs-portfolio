@@ -17,6 +17,35 @@ export type PostMeta = { title?: string; published?: boolean; tags?: string[] };
 export type PostKey = { key: string; date: string } & PostMeta;
 export type MdxPostContent = { mdxPostContent: MDXRemoteSerializeResult } & PostKey;
 
+export function getAllTags(): { params: { tag: string } }[] {
+  // Get file names under /posts and get only md files
+  let filenames = readdirRecursively(mdxpostsDirectory);
+  filenames = filenames.filter((fileName: string) => fileName.endsWith(extension));
+
+  const publishedPostFilenames: string[] = filenames.filter((fullPath) => {
+    // Read markdown file as string
+    // Use gray-matter to parse the post metadata section
+    const fileContents = fs.readFileSync(fullPath, "utf8");
+    const { content, data } = matter(fileContents);
+
+    return data.published;
+  });
+
+  const allTags = publishedPostFilenames.map((fullPath) => {
+    // Read markdown file as string
+    // Use gray-matter to parse the post metadata section
+    const fileContents = fs.readFileSync(fullPath, "utf8");
+    const { content, data } = matter(fileContents);
+
+    // Combine the data with the key
+    return data.tags as string[];
+  });
+
+  return allTags.flat().map((x) => {
+    return { params: { tag: x.toLowerCase() } };
+  });
+}
+
 /**
  * Extract date and key from fullpath.
  * e.g.: ${postsDirectory}/2022-08-01/newpost.md

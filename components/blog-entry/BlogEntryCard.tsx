@@ -15,7 +15,10 @@ const BlogEntryCard = ({ postKey }: Props) => {
         <br />
         <div className="flex flex-wrap space-x-2 my-2">
           {postKey.tags?.map((tag) => (
-            <text className="bg-slate-200 py-0 px-1 mb-2 rounded-md shadow-xs border border-slate-300 text-sm">
+            <text
+              key={tag}
+              className="bg-slate-200 py-0 px-1 mb-2 rounded-md shadow-xs border border-slate-300 text-sm"
+            >
               {tag}
             </text>
           ))}

@@ -102,6 +102,11 @@ const Navbar = (props: NavbarProps) => {
               Posts
             </button>
           </Link>
+          <Link href="/tags">
+            <button onClick={onClickLink} disabled={disabled} className="text-left">
+              Tags
+            </button>
+          </Link>
           <a href="https://github.com/hirotoni/nextjs-portfolio" target="_blank">
             <button onClick={onClickLink} disabled={disabled} className="text-left">
               <div className="flex flex-row items-center space-x-2">
