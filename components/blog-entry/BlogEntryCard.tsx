@@ -7,7 +7,7 @@ type Props = { postKey: PostKey };
 
 const BlogEntryCard = ({ postKey }: Props) => {
   return (
-    <div className="rounded-lg shadow-md">
+    <div className="rounded-lg shadow-md mb-2 border border-slate-100">
       <div className="p-4">
         <Link href={`/posts/${postKey.date}/${postKey.key}`}>
           <a>{postKey.title}</a>
