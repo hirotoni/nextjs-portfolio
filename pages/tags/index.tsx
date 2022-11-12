@@ -27,7 +27,7 @@ const Index = ({ allMdxPostsKeys, allTags }: Props) => {
   return (
     <Layout>
       <div>タグ一覧</div>
-      <div className="bg-teal-500 p-4 rounded-xl mb-2">
+      <div className="p-4 rounded-xl mb-2">
         <div className="flex flex-wrap justify-start space-x-2 leading-10">
           {allTags.map((tag) => (
             <Link key={tag} href={`/tags/${tag}`}>

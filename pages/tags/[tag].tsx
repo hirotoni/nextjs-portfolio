@@ -37,7 +37,7 @@ const Index = ({ selectedTag, allMdxPostsKeys }: Props) => {
   return (
     <Layout>
       <div>選択したタグの記事</div>
-      <div className="bg-teal-500 p-4 rounded-xl mb-2">
+      <div className="p-4 rounded-xl mb-2">
         <div className="leading-10">
           <text className="bg-slate-200 py-1 px-2 mb-2 rounded-md shadow-md border border-slate-300 text-sm">
             {selectedTag}
