@@ -65,6 +65,7 @@ export default function Post({ mdxPostContent }: Props) {
     <Layout post>
       <Head>
         <title>{mdxPostContent.title}</title>
+        <meta name="description" content={mdxPostContent.title} />
       </Head>
       <article>
         <h1 className="text-3xl font-extrabold leading-10 tracking-wide my-4">{mdxPostContent.title}</h1>
