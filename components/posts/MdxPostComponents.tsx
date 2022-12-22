@@ -69,23 +69,31 @@ export const Blockquote = (props) => (
 );
 
 export const Img = (props: DetailedHTMLProps<ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement>) => {
-  const ref = useRef(null);
-  const [hidden, setHidden] = useState(true);
+  const [clicked, setClicked] = useState(false);
+
   const onClick = () => {
-    console.log("clicked!!!");
-    setHidden(!hidden);
+    setClicked(true);
   };
 
-  useOutsideClickHandler(ref, (e) => setHidden(true));
+  const ref = useRef(null);
+  useOutsideClickHandler(ref, (e) => {
+    setClicked(false);
+  });
 
   return (
     <>
-      <p className="mx-auto w-1/2" onClick={onClick}>
+      <p className="mx-auto w-2/3" onClick={onClick}>
         <Image src={props.src} alt={props.alt} width="100" height="100" layout="responsive" />
       </p>
-      <div className="fixed top-0 left-0 w-full h-full bg-slate-300/50 z-10" hidden={hidden}>
-        <div className="mx-auto w-2/4 translate-y-2/4" ref={ref}>
-          <Image src={props.src} alt={props.alt} width="100" height="100" layout="responsive" />
+      <div
+        className={`fixed top-0 left-0 w-screen bg-slate-300/50 transition-all duration-200 ${
+          clicked ? "opacity-100 z-10" : "opacity-0 -z-10"
+        }`}
+      >
+        <div className="flex flex-col h-screen justify-center items-center">
+          <div className="w-4/5 md:w-3/5 lg:w-2/5" ref={ref}>
+            <Image src={props.src} alt={props.alt} width="100" height="100" layout="responsive" />
+          </div>
         </div>
       </div>
     </>
