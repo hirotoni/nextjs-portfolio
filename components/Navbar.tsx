@@ -82,39 +82,39 @@ const Navbar = (props: NavbarProps) => {
       </div>
 
       <div
-        className={`rounded bg-slate-300 absolute right-5 mt-3 p-2 shadow-lg opacity-0 ${styles.fadeIn}`}
+        className={`rounded bg-slate-300 absolute right-5 mt-3 shadow-lg opacity-0 ${styles.fadeIn}`}
         hidden={hidden}
         ref={ref}
       >
-        <div className="flex flex-col divide-y leading-10 px-3">
+        <div className="flex flex-col divide-y leading-10 items-start w-40">
           <Link href="/#aboutme">
-            <button onClick={onClickLink} disabled={disabled} className="text-left">
+            <button onClick={onClickLink} disabled={disabled} className="w-full hover:bg-slate-400/50">
               About Me
             </button>
           </Link>
           <Link href="/#myworks">
-            <button onClick={onClickLink} disabled={disabled} className="text-left">
+            <button onClick={onClickLink} disabled={disabled} className="w-full hover:bg-slate-400/50">
               My Works
             </button>
           </Link>
           <Link href="/#posts">
-            <button onClick={onClickLink} disabled={disabled} className="text-left">
+            <button onClick={onClickLink} disabled={disabled} className="w-full hover:bg-slate-400/50">
               Posts
             </button>
           </Link>
           <Link href="/tags">
-            <button onClick={onClickLink} disabled={disabled} className="text-left">
+            <button onClick={onClickLink} disabled={disabled} className="w-full hover:bg-slate-400/50">
               Tags
             </button>
           </Link>
-          <a href="https://github.com/hirotoni/nextjs-portfolio" target="_blank">
-            <button onClick={onClickLink} disabled={disabled} className="text-left">
-              <div className="flex flex-row items-center space-x-2">
+          <button onClick={onClickLink} disabled={disabled} className="w-full hover:bg-slate-400/90">
+            <a href="https://github.com/hirotoni/nextjs-portfolio" target="_blank">
+              <div className="flex flex-row justify-center items-center gap-2">
                 <GoMarkGithub />
                 <div>View Source</div>
               </div>
-            </button>
-          </a>
+            </a>
+          </button>
         </div>
       </div>
     </div>
