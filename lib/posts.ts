@@ -17,7 +17,7 @@ export type PostMeta = { title?: string; published?: boolean; tags?: string[] };
 export type PostKey = { key: string; date: string } & PostMeta;
 export type MdxPostContent = { mdxPostContent: MDXRemoteSerializeResult } & PostKey;
 
-export function getAllTags(): { params: { tag: string } }[] {
+export function getAllTags(): string[] {
   // Get file names under /posts and get only md files
   let filenames = readdirRecursively(mdxpostsDirectory);
   filenames = filenames.filter((fileName: string) => fileName.endsWith(extension));
@@ -41,9 +41,7 @@ export function getAllTags(): { params: { tag: string } }[] {
     return data.tags as string[];
   });
 
-  return allTags.flat().map((x) => {
-    return { params: { tag: x.toLowerCase() } };
-  });
+  return allTags.flat().map((x) => x.toLowerCase());
 }
 
 /**

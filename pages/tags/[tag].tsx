@@ -4,7 +4,9 @@ import Layout from "../../components/layout/Layout";
 import { getAllTags, getSortedMdxPostsKeys, PostKey } from "../../lib/posts";
 
 export async function getStaticPaths() {
-  const paths = getAllTags();
+  const allTags = getAllTags();
+  // transform
+  const paths = allTags.map((tag) => ({ params: { tag } }));
   return {
     paths,
     fallback: false,
