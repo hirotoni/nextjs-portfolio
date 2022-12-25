@@ -27,28 +27,26 @@ const Home = ({ allMdxPostsKeys }: Props) => {
       <Head>
         <title>{siteTitle}</title>
       </Head>
-      <div className="bg-slate-200/40 rounded-md shadow-lg p-2">
+      {/* <div className="bg-slate-200/40 rounded-md shadow-lg p-2">
         <div className="flex flex-row items-center text-sm space-x-2">
           <div className="text-yellow-500">
             <BsFillExclamationTriangleFill />
           </div>
           <p>準備中... / preparation in progress...</p>
         </div>
-      </div>
+      </div> */}
       <Heading2 id="aboutme" headingTitle="About Me" />
       <div>
-        <p>Software Engineer</p>
+        <text>Software Engineer</text>
       </div>
-      <div className="flex flex-row items-center">
-        <GoMarkGithub />
-        <a className="ml-2 text-teal-500 underline" href="https://github.com/hirotoni">
-          hirotoni
+      <div className="flex gap-4 mt-2">
+        <a className="flex items-center gap-2 border p-2 rounded shadow-md" href="https://github.com/hirotoni">
+          <GoMarkGithub />
+          <text className="text-teal-500 underline">hirotoni</text>
         </a>
-      </div>
-      <div className="flex flex-row items-center">
-        <BsTwitter />
-        <a className="ml-2 text-teal-500 underline" href="https://twitter.com/h_tonitoni">
-          h_tonitoni
+        <a className="flex items-center gap-2 border p-2 rounded shadow-md" href="https://twitter.com/h_tonitoni">
+          <BsTwitter />
+          <text className="text-teal-500 underline">h_tonitoni</text>
         </a>
       </div>
       <Heading2 id="myworks" headingTitle="My Works" />
