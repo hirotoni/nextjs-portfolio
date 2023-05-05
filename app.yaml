@@ -1,0 +1,25 @@
+env: standard # スタンダード環境（省略可）
+
+runtime: nodejs16 # Node.js 16を使う
+
+instance_class: F1
+
+service: default # GAEのサービスの名前。frontendとかでも良いかも
+
+handlers:
+  - url: /_next/static
+    static_dir: .next/static # CDN向けにこのディレクトリだけ公開する
+  - url: /(.*\.(gif|png|jpg|ico|txt|svg))$
+    static_files: public/\1
+    upload: public/.*\.(gif|png|jpg|ico|txt|svg)$
+  - url: /.*
+    script: auto
+    secure: always
+
+default_expiration: "12h" # 静的ファイルのキャッシュ期間
+
+env_variables:
+  NODE_ENV: "production"
+
+automatic_scaling:
+  min_instances: 0 # 動かしてないときはインスタンスを0にする
