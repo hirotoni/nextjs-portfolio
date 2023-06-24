@@ -1,14 +1,15 @@
-import Image from "next/image";
+"use client";
+
 import React, {
   AnchorHTMLAttributes,
   DetailedHTMLProps,
   HTMLAttributes,
-  ImgHTMLAttributes,
   OlHTMLAttributes,
   ReactNode,
   useRef,
   useState,
 } from "react";
+import Image from "next/image";
 import { useOutsideClickHandler } from "../../hooks/customhooks";
 
 /**
@@ -69,7 +70,7 @@ export const Blockquote = (props) => (
   <blockquote className="px-4 py-0.5 italic text-sm border-l-4 overflow-auto">{props.children}</blockquote>
 );
 
-export const Img = (props: DetailedHTMLProps<ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement>) => {
+export const Img = (props) => {
   const [clicked, setClicked] = useState(false);
 
   const onClick = () => {

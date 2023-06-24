@@ -1,18 +1,17 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import React from "react";
 
-type Props = {
-  isHome: boolean;
-};
-
-const Footer = (props: Props) => {
+const Footer = () => {
+  const pathname = usePathname();
+  const isHome = pathname === "/" ? true : false;
   return (
     <footer className="flex flex-col items-center">
-      {!props.isHome && (
+      {!isHome && (
         <div className="mt-12">
-          <Link href="/">
-            <a>← Back to home</a>
-          </Link>
+          <Link href="/">← Back to home</Link>
         </div>
       )}
 
