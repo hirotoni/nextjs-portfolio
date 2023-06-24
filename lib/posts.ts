@@ -7,11 +7,11 @@ import rehypePrism from "rehype-prism-plus";
 import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
 import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
-import { readdirRecursively } from "./filesystem";
+import { readdirRecursively as readDirRecursively } from "./filesystem";
 
-const postsFolder = "posts";
-const mdxpostsDirectory = path.join(process.cwd(), postsFolder);
-const extension = ".md";
+const POSTS_FOLDER = "posts";
+const MDX_POST_DIRECTORY = path.join(process.cwd(), POSTS_FOLDER);
+const EXTENSION = ".md";
 
 export type PostMeta = { title?: string; published?: boolean; tags?: string[] };
 export type PostKey = { key: string; date: string } & PostMeta;
@@ -19,8 +19,8 @@ export type MdxPostContent = { mdxPostContent: MDXRemoteSerializeResult } & Post
 
 export function getAllTags(): string[] {
   // Get file names under /posts and get only md files
-  let filenames = readdirRecursively(mdxpostsDirectory);
-  filenames = filenames.filter((fileName: string) => fileName.endsWith(extension));
+  let filenames = readDirRecursively(MDX_POST_DIRECTORY);
+  filenames = filenames.filter((fileName: string) => fileName.endsWith(EXTENSION));
 
   const publishedPostFilenames: string[] = filenames.filter((fullPath) => {
     // Read markdown file as string
@@ -47,33 +47,41 @@ export function getAllTags(): string[] {
 /**
  * Extract date and key from fullpath.
  * e.g.: ${postsDirectory}/2022-08-01/newpost.md
- * from above string, get date:2022-08-02, key:newpost
+ * from above string, get {date:2022-08-02, key:newpost}
  */
-function getDateAndKeyFromMdxFullPath(fullpath: string) {
-  const pattern = new RegExp(`${extension}$`);
-  const dateKey = fullpath.replace(mdxpostsDirectory + "/", "").replace(pattern, "");
+function getDateAndKeyFromMdxFullPath(fullpath: string): PostKey | null {
+  const pattern = new RegExp(`${EXTENSION}$`);
+  const dateKey = fullpath.replace(MDX_POST_DIRECTORY + "/", "").replace(pattern, "");
   const match = dateKey.match(/(\d{4}-\d{2}-\d{2})\/(.+)/);
-  const date = match ? match[1] : null;
-  const key = match ? match[2] : null;
 
-  return { date, key };
+  if (!match) {
+    return null;
+  }
+
+  const postKey: PostKey = {
+    date: match[1],
+    key: match[2],
+  };
+  return postKey;
 }
 
-export function getAllMdxPostKeys(): { params: PostKey }[] {
-  let filenames = readdirRecursively(mdxpostsDirectory);
-  filenames = filenames.filter((fileName: string) => fileName.endsWith(extension));
-  return filenames.map((fullPath) => {
-    const { date, key } = getDateAndKeyFromMdxFullPath(fullPath);
-    return {
-      params: { date, key },
-    };
+// get all post keys from MDX_POST_DIRECTORY
+export function getAllMdxPostKeys(): PostKey[] {
+  let filenames = readDirRecursively(MDX_POST_DIRECTORY);
+  filenames = filenames.filter((fileName: string) => fileName.endsWith(EXTENSION));
+
+  const nullableArray = filenames.map((fullPath) => {
+    return getDateAndKeyFromMdxFullPath(fullPath);
   });
+
+  const filtered = nullableArray.filter((x): x is PostKey => x !== null);
+  return filtered;
 }
 
 export function getSortedMdxPostsKeys(): PostKey[] {
   // Get file names under /posts and get only md files
-  let filenames = readdirRecursively(mdxpostsDirectory);
-  filenames = filenames.filter((fileName: string) => fileName.endsWith(extension));
+  let filenames = readDirRecursively(MDX_POST_DIRECTORY);
+  filenames = filenames.filter((fileName: string) => fileName.endsWith(EXTENSION));
 
   const publishedPostFilenames: string[] = filenames.filter((fullPath) => {
     // Read markdown file as string
@@ -84,24 +92,29 @@ export function getSortedMdxPostsKeys(): PostKey[] {
     return data.published;
   });
 
-  const allPostsData = publishedPostFilenames.map((fullPath) => {
-    const { date, key } = getDateAndKeyFromMdxFullPath(fullPath);
+  const nullableArray = publishedPostFilenames.map((fullPath) => {
+    const postKey = getDateAndKeyFromMdxFullPath(fullPath);
+    if (postKey === null) {
+      return null;
+    }
 
     // Read markdown file as string
     // Use gray-matter to parse the post metadata section
     const fileContents = fs.readFileSync(fullPath, "utf8");
-    const { content, data } = matter(fileContents);
+    const { data } = matter(fileContents);
 
     // Combine the data with the key
     return {
-      key,
-      date,
+      ...postKey,
       ...(data as PostMeta),
-    };
+    } as PostKey;
   });
 
+  // filter out null
+  const filtered = nullableArray.filter((x): x is PostKey => x !== null);
+
   // Sort posts by date
-  return allPostsData.sort(({ date: a }, { date: b }) => {
+  const sorted = filtered.sort(({ date: a }, { date: b }) => {
     if (a < b) {
       return 1;
     } else if (a > b) {
@@ -110,10 +123,11 @@ export function getSortedMdxPostsKeys(): PostKey[] {
       return 0;
     }
   });
+  return sorted;
 }
 
 export async function getMdxPostContent(postKey: PostKey): Promise<MdxPostContent> {
-  const fullPath = path.join(mdxpostsDirectory, `${postKey.date}`, `${postKey.key}${extension}`);
+  const fullPath = path.join(MDX_POST_DIRECTORY, `${postKey.date}`, `${postKey.key}${EXTENSION}`);
   const rawCode = fs.readFileSync(fullPath, "utf8");
 
   // =======================================================================
@@ -140,7 +154,7 @@ export async function getMdxPostContent(postKey: PostKey): Promise<MdxPostConten
             attributes: {
               ...defaultSchema.attributes,
               code: [
-                ...(defaultSchema.attributes.code || []),
+                ...(defaultSchema.attributes?.code || []),
                 // List of all allowed languages:
                 [
                   "className",

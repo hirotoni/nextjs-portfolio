@@ -1,15 +1,20 @@
-import React, { useEffect, useRef, useState } from "react";
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
-import { useOutsideClickHandler } from "../hooks/customhooks";
-import styles from "./Navbar.module.css";
 import { GoMarkGithub } from "react-icons/go";
+import styles from "../components/Navbar.module.css";
+import { useOutsideClickHandler } from "../hooks/customhooks";
 
 type NavbarProps = {
   enableFadeOutOnScroll?: boolean;
 };
 
 const Navbar = (props: NavbarProps) => {
+  const pathname = usePathname();
+  const isPost = pathname?.startsWith("/posts/");
   const ref = useRef(null);
   const [hidden, setHidden] = useState(true);
 
@@ -26,13 +31,13 @@ const Navbar = (props: NavbarProps) => {
   const [opacity, setOpacity] = useState(1);
   const [disabled, setDisabled] = useState(false);
   useEffect(() => {
-    if (!props.enableFadeOutOnScroll) {
+    if (!isPost) {
       return;
     }
 
-    const headerHeight = headerRef.current.clientHeight;
+    const headerHeight = headerRef.current?.clientHeight;
     const screenHeight = window.screen.height;
-    const offset = headerHeight + 200;
+    const offset = headerHeight ? headerHeight + 200 : 200;
 
     const didScrollPage = (e) => {
       let calc = 1 - (window.scrollY - offset + screenHeight) / screenHeight;
@@ -71,11 +76,11 @@ const Navbar = (props: NavbarProps) => {
       className={`container mx-auto z-10 py-2 sticky top-0 bg-white/40 backdrop-blur-sm`}
     >
       <div className="flex flex-row justify-between items-center px-1">
-        <Link href="/">
-          <button disabled={disabled}>
+        <button disabled={disabled}>
+          <Link href="/">
             <strong className="text-lg">Hirotoni</strong>
-          </button>
-        </Link>
+          </Link>
+        </button>
         <button className="border-2 rounded-md p-1 border-black" onClick={onClickHamburgerIcon} disabled={disabled}>
           <GiHamburgerMenu />
         </button>
@@ -87,33 +92,25 @@ const Navbar = (props: NavbarProps) => {
         ref={ref}
       >
         <div className="flex flex-col divide-y leading-10 items-start w-40">
-          <Link href="/#aboutme">
-            <button onClick={onClickLink} disabled={disabled} className="w-full hover:bg-slate-400/50">
-              About Me
-            </button>
-          </Link>
-          <Link href="/#techstacks">
-            <button onClick={onClickLink} disabled={disabled} className="w-full hover:bg-slate-400/50">
-              Teck Stacks
-            </button>
-          </Link>
-          <Link href="/#posts">
-            <button onClick={onClickLink} disabled={disabled} className="w-full hover:bg-slate-400/50">
-              Posts
-            </button>
-          </Link>
-          <Link href="/tags">
-            <button onClick={onClickLink} disabled={disabled} className="w-full hover:bg-slate-400/50">
-              Tags
-            </button>
-          </Link>
+          <button onClick={onClickLink} disabled={disabled} className="w-full hover:bg-slate-400/50">
+            <Link href="/#aboutme">About Me</Link>
+          </button>
+          <button onClick={onClickLink} disabled={disabled} className="w-full hover:bg-slate-400/50">
+            <Link href="/#techstacks">Teck Stacks</Link>
+          </button>
+          <button onClick={onClickLink} disabled={disabled} className="w-full hover:bg-slate-400/50">
+            <Link href="/#posts">Posts</Link>
+          </button>
+          <button onClick={onClickLink} disabled={disabled} className="w-full hover:bg-slate-400/50">
+            <Link href="/tags">Tags</Link>
+          </button>
           <button onClick={onClickLink} disabled={disabled} className="w-full hover:bg-slate-400/90">
-            <a href="https://github.com/hirotoni/nextjs-portfolio" target="_blank">
+            <Link href="https://github.com/hirotoni/nextjs-portfolio" target="_blank">
               <div className="flex flex-row justify-center items-center gap-2">
                 <GoMarkGithub />
                 <div>View Source</div>
               </div>
-            </a>
+            </Link>
           </button>
         </div>
       </div>

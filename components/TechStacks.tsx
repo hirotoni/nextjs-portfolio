@@ -28,7 +28,7 @@ const TechStacks = (props: Props) => {
             <text className={`${THEME.bg.dark} p-1 rounded-sm`}>{item[0]}</text>
             <ul className="list-disc list-inside break-all">
               {item[1].map((x) => (
-                <li>{x}</li>
+                <li key={x}>{x}</li>
               ))}
             </ul>
           </div>
