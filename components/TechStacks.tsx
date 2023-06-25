@@ -3,15 +3,10 @@ import Heading2 from "./Heading2";
 import { THEME } from "./theme";
 
 const STACKS = {
-  ["Languages & WebFrameworks"]: [
-    "Python / Django",
-    "Go / Revel",
-    "Java / SAStruts",
-    "Javascript(Typescript) / Express",
-  ],
-  Databases: ["MySQL", "Postgres", "OracleDB", "MongoDB"],
+  Languages: ["Python", "Go", "Java", "Javascript(Typescript)"],
+  Databases: ["MySQL", "Postgres", "MongoDB"],
   Frontend: ["React / Nextjs"],
-  NativeApplication: ["React Native"],
+  MobileApplication: ["React Native"],
   DataProcessing: ["Pandas"],
   GIS: ["QGIS", "Geopandas"],
 };

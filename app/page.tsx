@@ -18,7 +18,7 @@ async function page() {
     <div>
       <Heading2 id="aboutme" headingTitle="About Me" />
       <div>
-        <text>Software Engineer</text>
+        <text>Web Software Engineer</text>
       </div>
       <div className="flex gap-4 mt-2">
         <a href={URLS.github} target="_blank">
