@@ -1,6 +1,6 @@
 ---
 title: Github Actions から Google App Engine にデプロイしてみた
-published: false
+published: true
 tags: ["CICD", "Github", "Github Actions", "GCP"]
 ---
 
@@ -16,28 +16,23 @@ tags: ["CICD", "Github", "Github Actions", "GCP"]
 
 現在見ているこのサイトのデプロイを Github Actions を使って自動的に Google App Engine へ行うように仕組みを構築してみた。
 
-今までどのようにデプロイしていたかというと、ローカルから gcloud cli を使って Google App Engine にデプロイを行っていた。
+今まではローカルから gcloud cli を使って直接デプロイしていた。そうするとデプロイ時点でのローカルの資材がデプロイされるため、必ずしもレポジトリの最新の内容がデプロイされているとは限らなかった。
 
-こうすると、ローカルで行った開発内容が本番環境に反映されているので、Github 上に公開しているものとは一致しないことがある。
+職場では Gitlab と AWS で CICD が構築されているが、その「見たことある」を頼りに、Github と GCP で同じものを自身で構築してみた。
 
-ソース管理上よろしくないので、いつか Github 上に反映した修正内容が自動的にデプロイされる仕組みを構築したいと思っていた。
+実現したいことは、master ブランチに PR がマージされたタイミングでビルドとデプロイが自動的に実行されて欲しい。全体では以下のような流れにする。
 
-今回、まとまった時間ができたのでやってみた。
-
-master ブランチに PR がマージされたタイミングでビルドとデプロイが自動的に実行されて欲しいので、全体では以下のような流れにする。
-
-1. ローカルでブランチを作成して修正内容をコミット
-2. ローカルのブランチを Github 上に push する
-3. Github 上で PR を作る
-4. PR を master ブランチにマージする
-5. Github Actions が master ブランチへのマージを検知してビルドとデプロイを実行する
+1. ローカルで修正したブランチを Github 上に push する
+2. Github 上で PR を作る
+3. PR を master ブランチにマージする
+4. Github Actions が master ブランチへのマージを検知してビルドとデプロイを実行する
 
 # 必要な知識
 
 いろんなドキュメントを見ながら手探りで一通りやってみて、以下の知識がついた（必要だった）。
 
-- Github Actions を定義する yaml ファイル
-- Google App Engine の Github Actions 用のプラグイン
+- Github Actions
+- Github Actions の GAE プラグイン
 - IAM の知識
 - Workload Identity pools の知識
 
@@ -55,12 +50,13 @@ master ブランチに PR がマージされたタイミングでビルドとデ
 - [GitHub Actions からのキーなしの認証の有効化](https://cloud.google.com/blog/ja/products/identity-security/enabling-keyless-authentication-from-github-actions?hl=ja)
 - [Configuring OpenID Connect in Google Cloud Platform](https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-google-cloud-platform)
 
+書くのに力尽きたので、この続きは気が向いたらいつか続きを書く。
+
 # references
 
 - [About security hardening with OpenID Connect](https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/about-security-hardening-with-openid-connect)
 - [Configuring OpenID Connect in Google Cloud Platform](https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-google-cloud-platform)
 - [Workload Identity 連携を構成する](https://cloud.google.com/iam/docs/workload-identity-federation-with-deployment-pipelines?hl=ja#configure)
 - [GitHub Actions からのキーなしの認証の有効化](https://cloud.google.com/blog/ja/products/identity-security/enabling-keyless-authentication-from-github-actions?hl=ja)
-
-https://christina04.hatenablog.com/entry/workload-identity-federation
-https://medium.com/google-cloud/how-does-the-gcp-workload-identity-federation-work-with-github-provider-a9397efd7158
+- https://christina04.hatenablog.com/entry/workload-identity-federation
+- https://medium.com/google-cloud/how-does-the-gcp-workload-identity-federation-work-with-github-provider-a9397efd7158
