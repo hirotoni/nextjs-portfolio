@@ -1,12 +1,7 @@
 import fs from "fs";
 import matter from "gray-matter";
 import { MDXRemoteSerializeResult } from "next-mdx-remote";
-import { serialize } from "next-mdx-remote/serialize";
 import path from "path";
-import rehypePrism from "rehype-prism-plus";
-import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
-import rehypeSlug from "rehype-slug";
-import remarkGfm from "remark-gfm";
 import { readdirRecursively as readDirRecursively } from "./filesystem";
 
 const POSTS_FOLDER = "posts";
@@ -126,66 +121,10 @@ export function getSortedMdxPostsKeys(): PostKey[] {
   return sorted;
 }
 
-export async function getMdxPostContent(postKey: PostKey): Promise<MdxPostContent> {
-  const fullPath = path.join(MDX_POST_DIRECTORY, `${postKey.date}`, `${postKey.key}${EXTENSION}`);
+export async function getPostContent(key: PostKey): Promise<{ content: string; metadata: PostMeta }> {
+  const fullPath = path.join(MDX_POST_DIRECTORY, `${key.date}`, `${key.key}${EXTENSION}`);
   const rawCode = fs.readFileSync(fullPath, "utf8");
-
-  // =======================================================================
-  // Implementation using next-mdx-remote
-  // References:
-  // https://github.com/hashicorp/next-mdx-remote
-  // https://github.com/vercel/next.js/tree/canary/examples/with-mdx-remote
-  // =======================================================================
-
   const { content, data: metadata } = matter(rawCode);
 
-  const mdxPostContent = await serialize(content, {
-    // made available to the arguments of any custom mdx component
-    scope: {},
-    // MDX's available options, see the MDX docs for more info.
-    // https://mdxjs.com/packages/mdx/#compilefile-options
-    mdxOptions: {
-      remarkPlugins: [remarkGfm],
-      rehypePlugins: [
-        [
-          rehypeSanitize,
-          {
-            ...defaultSchema,
-            attributes: {
-              ...defaultSchema.attributes,
-              code: [
-                ...(defaultSchema.attributes?.code || []),
-                // List of all allowed languages:
-                [
-                  "className",
-                  "language-javascript",
-                  "language-python",
-                  "language-csharp",
-                  "language-html",
-                  "language-css",
-                  "language-xml",
-                  "language-django",
-                  "language-jsx",
-                  "language-tsx",
-                  "language-markdown",
-                  "language-md",
-                ],
-              ],
-            },
-          },
-        ],
-        rehypePrism,
-        rehypeSlug,
-      ],
-      format: "mdx",
-    },
-    // Indicates whether or not to parse the frontmatter from the mdx source
-    parseFrontmatter: false,
-  });
-
-  return {
-    mdxPostContent,
-    ...postKey,
-    ...metadata,
-  };
+  return { content, metadata };
 }

@@ -1,22 +1,12 @@
-import { Metadata, ResolvingMetadata } from "next";
 import Link from "next/link";
 import Date from "../../../../components/Date";
+import MdxContent from "../../../../components/posts/MdxContent";
 import { THEME } from "../../../../components/theme";
-import { PostKey, getAllMdxPostKeys, getMdxPostContent } from "../../../../lib/posts";
-import MdxContent from "./mdx-content";
+import { PostKey, getAllMdxPostKeys, getPostContent } from "../../../../lib/posts";
 
 type Props = {
   params: PostKey;
 };
-
-export async function generateMetadata({ params }: Props, parent: ResolvingMetadata): Promise<Metadata> {
-  const mdxPostContent = await getMdxPostContent(params);
-
-  return {
-    title: mdxPostContent.title,
-    description: mdxPostContent.title,
-  };
-}
 
 export async function generateStaticParams() {
   const postKeys = getAllMdxPostKeys();
@@ -26,13 +16,13 @@ export async function generateStaticParams() {
 }
 
 async function Page({ params }: Props) {
-  const mdxPostContent = await getMdxPostContent(params);
+  const { content, metadata } = await getPostContent(params);
   return (
     <>
       <article>
-        <h1 className="text-3xl font-extrabold leading-10 tracking-wide my-4">{mdxPostContent.title}</h1>
+        <h1 className="text-3xl font-extrabold leading-10 tracking-wide my-4">{metadata.title}</h1>
         <div className="flex flex-wrap justify-start space-x-2 leading-10">
-          {mdxPostContent.tags?.map((tag) => (
+          {metadata.tags?.map((tag) => (
             <Link href={`/tags/${tag.toLowerCase()}`} key={tag}>
               <text className="bg-slate-200 py-1 px-2 mb-2 rounded-md shadow-md border border-slate-300 text-sm">
                 {tag}
@@ -41,9 +31,9 @@ async function Page({ params }: Props) {
           ))}
         </div>
         <div className={THEME.text.sub}>
-          <Date dateString={mdxPostContent.date} />
+          <Date dateString={params.date} />
         </div>
-        <MdxContent mdxPostContent={mdxPostContent} />
+        <MdxContent source={content} />
       </article>
     </>
   );
