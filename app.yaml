@@ -1,6 +1,6 @@
 env: standard # スタンダード環境（省略可）
 
-runtime: nodejs16 # Node.js 16を使う
+runtime: nodejs20 # Node.js 20を使う
 
 instance_class: F1
 
