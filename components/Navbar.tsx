@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
-import { GoMarkGithub } from "react-icons/go";
+import { IoLogoGithub } from "react-icons/io";
 import styles from "../components/Navbar.module.css";
 import { useOutsideClickHandler } from "../hooks/customhooks";
 
@@ -107,7 +107,7 @@ const Navbar = (props: NavbarProps) => {
           <button onClick={onClickLink} disabled={disabled} className="w-full hover:bg-slate-400/90">
             <Link href="https://github.com/hirotoni/nextjs-portfolio" target="_blank">
               <div className="flex flex-row justify-center items-center gap-2">
-                <GoMarkGithub />
+                <IoLogoGithub />
                 <div>View Source</div>
               </div>
             </Link>

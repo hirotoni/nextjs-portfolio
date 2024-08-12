@@ -1,5 +1,5 @@
 import { BsTwitter } from "react-icons/bs";
-import { GoMarkGithub } from "react-icons/go";
+import { IoLogoGithub } from "react-icons/io";
 import Heading2 from "../components/Heading2";
 import TechStacks from "../components/TechStacks";
 import BlogEntryCard from "../components/blog-entry/BlogEntryCard";
@@ -25,7 +25,7 @@ async function page() {
           <div
             className={`flex items-center gap-2 border p-2 rounded shadow-md cursor-pointer hover:${THEME.bg.hover}`}
           >
-            <GoMarkGithub />
+            <IoLogoGithub />
             <text className={`${THEME.text.main} underline`}>hirotoni</text>
           </div>
         </a>
