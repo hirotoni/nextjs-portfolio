@@ -17,8 +17,18 @@ type Data = {
   allMdxPostsKeys: PostKey[];
 };
 
+function sanitizeTag(tag: string): string {
+  // Remove any characters that are not alphanumeric or a hyphen or a space
+  const decoded = decodeURIComponent(tag);
+  const sanitized = decoded.replace(/[^a-zA-Z0-9- ]/g, "");
+  if (sanitized !== decoded) {
+    return "不正なタグです";
+  }
+  return sanitized;
+}
+
 async function getData(tag: string): Promise<Data> {
-  const selectedTag = tag;
+  const selectedTag = sanitizeTag(tag);
   const allMdxPostsKeys = getSortedMdxPostsKeys();
   const filtered = allMdxPostsKeys.filter((x) => x.tags?.map((tag) => tag.toLowerCase()).includes(selectedTag));
 
