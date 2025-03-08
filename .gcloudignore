@@ -1,9 +1,0 @@
-# ignore all
-/*
- 
-# upload
-!/app.yaml
-!/package.json
-!/package-lock.json
-!/public/
-!/.next/
