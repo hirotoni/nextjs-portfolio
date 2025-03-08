@@ -1,8 +1,8 @@
 import Link from "next/link";
 import React from "react";
-import { PostKey } from "../../lib/posts";
-import Date from "../Date";
-import { THEME } from "../theme";
+import { PostKey } from "@/lib/posts";
+import Date from "@/components/Date";
+import { THEME } from "@/components/theme";
 
 const Tags = ({ tags }) => {
   return (

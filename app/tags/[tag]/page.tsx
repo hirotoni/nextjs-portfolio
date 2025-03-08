@@ -1,5 +1,5 @@
-import { PostKey, getAllTags, getSortedMdxPostsKeys } from "../../../lib/posts";
-import BlogEntryCard from "../../../components/blog-entry/BlogEntryCard";
+import { PostKey, getAllTags, getSortedMdxPostsKeys } from "@/lib/posts";
+import BlogEntryCard from "@/components/blog-entry/BlogEntryCard";
 
 export async function generateStaticParams() {
   const allTags = getAllTags();

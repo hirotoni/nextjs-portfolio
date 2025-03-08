@@ -10,7 +10,7 @@ import React, {
   useState,
 } from "react";
 import Image from "next/image";
-import { useOutsideClickHandler } from "../../hooks/customhooks";
+import { useOutsideClickHandler } from "@/hooks/customhooks";
 
 /**
  * if you want to use rehype plugins result,
