@@ -1,9 +1,9 @@
-import "../styles/global.css";
+import "@/styles/global.css";
 import "prismjs/themes/prism-tomorrow.css";
 
-import Footer from "../components/Footer";
-import Navbar from "../components/Navbar";
-import EyeCatch from "../components/EyeCatch";
+import Footer from "@/components/Footer";
+import Navbar from "@/components/Navbar";
+import EyeCatch from "@/components/EyeCatch";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

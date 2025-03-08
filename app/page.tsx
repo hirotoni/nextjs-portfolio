@@ -1,10 +1,10 @@
 import { BsTwitter } from "react-icons/bs";
 import { IoLogoGithub } from "react-icons/io";
-import Heading2 from "../components/Heading2";
-import TechStacks from "../components/TechStacks";
-import BlogEntryCard from "../components/blog-entry/BlogEntryCard";
-import { THEME } from "../components/theme";
-import { getSortedMdxPostsKeys } from "../lib/posts";
+import Heading2 from "@/components/Heading2";
+import TechStacks from "@/components/TechStacks";
+import BlogEntryCard from "@/components/blog-entry/BlogEntryCard";
+import { THEME } from "@/components/theme";
+import { getSortedMdxPostsKeys } from "@/lib/posts";
 
 const URLS = {
   github: "https://github.com/hirotoni",

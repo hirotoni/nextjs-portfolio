@@ -1,6 +1,6 @@
-import { PostKey, getAllTags, getSortedMdxPostsKeys } from "../../lib/posts";
+import { PostKey, getAllTags, getSortedMdxPostsKeys } from "@/lib/posts";
 import Link from "next/link";
-import BlogEntryCard from "../../components/blog-entry/BlogEntryCard";
+import BlogEntryCard from "@/components/blog-entry/BlogEntryCard";
 
 type Data = {
   allMdxPostsKeys: PostKey[];

@@ -5,8 +5,8 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { IoLogoGithub } from "react-icons/io";
-import styles from "../components/Navbar.module.css";
-import { useOutsideClickHandler } from "../hooks/customhooks";
+import styles from "@/components/Navbar.module.css";
+import { useOutsideClickHandler } from "@/hooks/customhooks";
 
 type NavbarProps = {
   enableFadeOutOnScroll?: boolean;

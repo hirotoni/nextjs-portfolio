@@ -1,8 +1,8 @@
 import Link from "next/link";
-import Date from "../../../../components/Date";
-import MdxContent from "../../../../components/posts/MdxContent";
-import { THEME } from "../../../../components/theme";
-import { PostKey, getAllMdxPostKeys, getPostContent } from "../../../../lib/posts";
+import Date from "@/components/Date";
+import MdxContent from "@/components/posts/MdxContent";
+import { THEME } from "@/components/theme";
+import { PostKey, getAllMdxPostKeys, getPostContent } from "@/lib/posts";
 
 type Props = {
   params: PostKey;
