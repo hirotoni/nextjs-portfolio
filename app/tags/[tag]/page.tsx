@@ -18,9 +18,9 @@ type Data = {
 };
 
 function sanitizeTag(tag: string): string {
-  // Remove any characters that are not alphanumeric or a hyphen or a space
+  // Remove any characters that are not alphanumeric or a hyphen or a space or a period
   const decoded = decodeURIComponent(tag);
-  const sanitized = decoded.replace(/[^a-zA-Z0-9- ]/g, "");
+  const sanitized = decoded.replace(/[^a-zA-Z0-9- \.]/g, "");
   if (sanitized !== decoded) {
     return "不正なタグです";
   }
